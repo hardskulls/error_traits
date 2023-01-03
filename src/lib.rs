@@ -132,14 +132,14 @@ impl<T, E> MapErrToString<T> for StdResult<T, E>
 
 
 /// Wraps any type into `Ok()` variant of `Result`.
-pub trait IntoOk<T, E>
+pub trait InOk<T, E>
 {
-    fn into_ok(self) -> StdResult<T, E>;
+    fn in_ok(self) -> StdResult<T, E>;
 }
 
-impl<T, E> IntoOk<T, E> for T
+impl<T, E> InOk<T, E> for T
 {
-    fn into_ok(self) -> StdResult<T, E>
+    fn in_ok(self) -> StdResult<T, E>
     {
         Ok(self)
     }
@@ -147,14 +147,14 @@ impl<T, E> IntoOk<T, E> for T
 
 
 /// Wraps any type into `Ok()` variant of `Result`.
-pub trait IntoErr<T, E>
+pub trait InErr<T, E>
 {
-    fn into_err(self) -> StdResult<T, E>;
+    fn in_err(self) -> StdResult<T, E>;
 }
 
-impl<T, E> IntoErr<T, E> for E
+impl<T, E> InErr<T, E> for E
 {
-    fn into_err(self) -> StdResult<T, E>
+    fn in_err(self) -> StdResult<T, E>
     {
         Err(self)
     }
