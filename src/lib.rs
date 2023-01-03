@@ -1,11 +1,11 @@
 use std::fmt::{Debug, Display};
 
-#[cfg(feature = "error-stack")]
+#[cfg(feature = "error_stack_dyn_ext")]
 use error_stack::{Context, IntoReportCompat, ResultExt};
 
 /// Conversion and adjustment of error reports (after turning usual result to
 /// report by calling `.into_report()`).
-#[cfg(feature = "error-stack")]
+#[cfg(feature = "error_stack_dyn_ext")]
 pub trait ConvReport
     where 
         Self: ResultExt + Sized
@@ -25,12 +25,12 @@ pub trait ConvReport
     }
 }
 
-#[cfg(feature = "error-stack")]
+#[cfg(feature = "error_stack_dyn_ext")]
 impl<T, C> ConvReport for error_stack::Result<T, C> {}
 
 
 /// Create report from usual result ( required for `Box(dyn Error)` ).
-#[cfg(feature = "error-stack")]
+#[cfg(feature = "error_stack_dyn_ext")]
 pub trait IntoReportDyn
 {
     type Ok;
@@ -39,7 +39,7 @@ pub trait IntoReportDyn
     fn into_report_dyn(self) -> error_stack::Result<Self::Ok, Self::Err>;
 }
 
-#[cfg(feature = "error-stack")]
+#[cfg(feature = "error_stack_dyn_ext")]
 impl<T, E> IntoReportDyn for Result<T, E>
     where 
         E: Send + Sync + Debug + Display + 'static
@@ -91,6 +91,7 @@ impl<T, E, N> MapErrBy<T, N> for StdResult<T, E>
 }
 
 /// If error is present, this trait logs it and returns back.
+#[cfg(feature = "log_err")]
 pub trait LogErr
 {
     fn log_err(self, log_msg: &str) -> Self;
