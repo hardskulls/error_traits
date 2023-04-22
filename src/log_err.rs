@@ -3,6 +3,17 @@ use std::fmt::Display;
 use crate::StdResult;
 
 /// If error is present, this trait logs it and returns back.
+/// Requires an initialized logger.
+///
+/// # Examples
+///
+/// ```
+/// use std::net::SocketAddr;
+/// use error_traits::LogErr;
+///
+/// let error = "foo".parse::<SocketAddr>().log_err();
+/// ```
+
 pub trait LogErr
 {
     fn log_err(self, log_msg : &str) -> Self;
