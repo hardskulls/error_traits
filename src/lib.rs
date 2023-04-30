@@ -196,4 +196,35 @@ impl<M, N> MapType<M, N> for M
 }
 
 
+/**
+Applies `f` to `Result` type if it is an error an returns it back.
+Meant to be used for logging, or something alike.
+
+
+# Examples
+
+```
+use error_traits::PassErrWith;
+let result = "foo".parse::<u16>().pass_err_with(|e| println!("[:: LOG ::] {e}"));
+```
+*/
+pub trait PassErrWith
+{
+    type Error;
+    
+    fn pass_err_with(self, f : impl Fn(&Self::Error)) -> Self;
+}
+
+impl<T, E> PassErrWith for Result<T, E>
+{
+    type Error = E;
+    
+    fn pass_err_with(self, f: impl Fn(&Self::Error)) -> Self
+    {
+        if let Err(e) = &self
+        { f(e) }
+        self
+    }
+}
+
 
