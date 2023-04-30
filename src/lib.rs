@@ -151,7 +151,7 @@ enum MyEnum
 }
 
 // Instead of writing
-let e = Err(Some(MyEnum::Foo(0)));
+let e : Result<String, Option<MyEnum>> = Err(Some(MyEnum::Foo(0)));
 
 // you can write:
 let r : Result<String, Option<MyEnum>> = MyEnum::Foo(0).into().in_err();
@@ -167,5 +167,33 @@ impl<T, E> WrapInErr<T, E> for E
     fn in_err(self) -> StdResult<T, E>
     { Err(self) }
 }
+
+
+/**
+Transforms one type into another.
+
+
+# Examples
+
+```
+use std::time::Duration;
+use error_traits::MapType;
+
+let minutes = 5;
+
+let duration : Duration = minutes.map_type(|m| Duration::from_secs(m * 60));
+```
+*/
+pub trait MapType<M, N>
+{
+    fn map_type(self, f : impl FnOnce(M) -> N) -> N;
+}
+
+impl<M, N> MapType<M, N> for M
+{
+    fn map_type(self, f : impl FnOnce(M) -> N) -> N
+    { f(self) }
+}
+
 
 
