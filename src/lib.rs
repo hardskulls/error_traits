@@ -273,7 +273,7 @@ impl<T, E> PassErrWith for Result<T, E>
 {
     type Error = E;
     
-    fn pass_err_with(self, f: impl Fn(&Self::Error)) -> Self
+    fn pass_err_with(self, f : impl Fn(&Self::Error)) -> Self
     {
         if let Err(e) = &self
         { f(e) }
