@@ -123,6 +123,7 @@ let e = Ok(Some(MyEnum::Foo(0)));
 let r : Result<Option<MyEnum>, String> = MyEnum::Foo(0).into().in_ok();
 ```
 */
+#[deprecated]
 pub trait WrapInOk<T, E>
 {
     fn in_ok(self) -> StdResult<T, E>;
@@ -157,6 +158,7 @@ let e : Result<String, Option<MyEnum>> = Err(Some(MyEnum::Foo(0)));
 let r : Result<String, Option<MyEnum>> = MyEnum::Foo(0).into().in_err();
 ```
 */
+#[deprecated]
 pub trait WrapInErr<T, E>
 {
     fn in_err(self) -> StdResult<T, E>;
@@ -166,6 +168,58 @@ impl<T, E> WrapInErr<T, E> for E
 {
     fn in_err(self) -> StdResult<T, E>
     { Err(self) }
+}
+
+
+/**
+Wraps any type in `Ok` or `Err` variant of standard `Result` type.
+Helps to avoid parenthesis apocalypse.
+
+
+# Examples
+
+```
+use error_traits::WrapInRes;
+
+enum MyEnum
+{
+    Foo(u8),
+    Bar(u8)
+}
+
+// Instead of writing
+let e : Result<String, Option<MyEnum>> = Err(Some(MyEnum::Foo(0)));
+
+// you can write:
+let r : Result<String, Option<MyEnum>> = MyEnum::Foo(0).into().in_err();
+// or
+let r : Result<Option<MyEnum>, _> =
+    MyEnum::Foo(0)
+        .into()
+        .in_ok::<String>();
+```
+*/
+pub trait WrapInRes<T>
+{
+    fn in_ok<ERR>(self) -> Result<T, ERR>;
+    fn in_err<OK>(self) -> Result<OK, T>;
+}
+
+impl<T> WrapInRes<T> for T
+{
+    fn in_ok<ERR>(self) -> Result<T, ERR> { Ok(self) }
+    fn in_err<OK>(self) -> Result<OK, T> { Err(self) }
+}
+
+
+pub trait ToEmpty
+{
+    fn to_empty(self);
+}
+
+impl<T> ToEmpty for T
+{
+    fn to_empty(self) {}
 }
 
 
