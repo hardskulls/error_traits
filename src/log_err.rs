@@ -11,7 +11,7 @@ use crate::StdResult;
 /// use std::net::SocketAddr;
 /// use error_traits::LogErr;
 ///
-/// let error = "foo".parse::<SocketAddr>().log_err();
+/// let error = "foo".parse::<SocketAddr>().log_err("some_log_prefix: error");
 /// ```
 
 pub trait LogErr
