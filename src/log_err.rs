@@ -1,6 +1,5 @@
-
-use std::fmt::Display;
 use crate::StdResult;
+use std::fmt::Display;
 
 /// If error is present, this trait logs it and returns back.
 /// Requires an initialized logger.
@@ -14,21 +13,18 @@ use crate::StdResult;
 /// let error = "foo".parse::<SocketAddr>().log_err("some_log_prefix: error");
 /// ```
 
-pub trait LogErr
-{
-    fn log_err(self, log_msg : &str) -> Self;
+pub trait LogErr {
+    fn log_err(self, log_msg: &str) -> Self;
 }
 
 impl<T, E> LogErr for StdResult<T, E>
-    where
-        E : Display
+where
+    E: Display,
 {
-    fn log_err(self, log_prefix : &str) -> Self
-    {
-        if let Err(e) = &self
-        { log::error!("{log_prefix}{e}") }
+    fn log_err(self, log_prefix: &str) -> Self {
+        if let Err(e) = &self {
+            log::error!("{log_prefix}{e}")
+        }
         self
     }
 }
-
-
