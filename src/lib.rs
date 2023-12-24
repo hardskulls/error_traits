@@ -205,6 +205,8 @@ pub trait ToNoneIf: Sized {
     }
 }
 
+impl<T> ToNoneIf for T {}
+
 /// Wraps type in `Result` and returns `Err` if condition is true.
 pub trait ToErrIf: Sized {
     fn to_err_if<T>(self, cond: impl Fn(&Self) -> bool, err: T) -> Result<Self, T> {
@@ -214,3 +216,5 @@ pub trait ToErrIf: Sized {
         }
     }
 }
+
+impl<T> ToErrIf for T {}
