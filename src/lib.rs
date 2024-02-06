@@ -200,7 +200,7 @@ pub trait ToNoneIf: Sized {
     fn to_none_if(self, cond: impl Fn(&Self) -> bool) -> Option<Self> {
         match cond(&self) {
             true => None,
-            _ => Some(self)
+            _ => Some(self),
         }
     }
 }
@@ -212,7 +212,7 @@ pub trait ToErrIf: Sized {
     fn to_err_if<T>(self, cond: impl Fn(&Self) -> bool, err: T) -> Result<Self, T> {
         match cond(&self) {
             true => Err(err),
-            _ => Ok(self)
+            _ => Ok(self),
         }
     }
 }
