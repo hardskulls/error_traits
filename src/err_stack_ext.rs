@@ -24,7 +24,12 @@ where
     }
 }
 
-impl<T, C> ConvReport for error_stack::Result<T, C> {}
+impl<T, C> ConvReport for error_stack::Result<T, C>
+where
+    C: Context,
+    Self: Sized,
+{
+}
 
 /// Create report from usual result ( required for `Box(dyn Error)` ).
 pub trait IntoReportDyn {
